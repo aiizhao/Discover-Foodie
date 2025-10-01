@@ -3,7 +3,7 @@ import { Link } from "@reach/router";
 import "./NavBar.css";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
 
-const GOOGLE_CLIENT_ID = "563732121786-em6bqfav47oin2kha948oabicagt0dgf.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "725236846433-cllkarcbgs3ml2kak0ht1d21akcjbb4s.apps.googleusercontent.com";
 
 const NavBar = ({ userId, handleLogin, handleLogout }) => {
   return (
