@@ -1,4 +1,4 @@
-[Foodie](https://discoverfoodie.herokuapp.com/) is a website where friends can share and rank local food recommendations with each other; created during MIT's web.lab course
+[Foodie](https://discover-foodie-f6e5da382e4d.herokuapp.com/) is a website where friends can share and rank local food recommendations with each other; created during MIT's web.lab course
 
 # Features:
 Users can:
@@ -19,3 +19,4 @@ Users can:
     react-rating-stars-component
     react-html-parser
     google-maps-react
+
