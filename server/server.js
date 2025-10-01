@@ -17,7 +17,7 @@ const socketManager = require("./server-socket");
 
 // Server configuration 
 const mongoConnectionURL = process.env.MONGO_SRV;
-const databaseName = "teamcloud23";
+const databaseName = process.env.DB_NAME;
 
 // connect to mongodb
 mongoose

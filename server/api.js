@@ -335,6 +335,45 @@ router.post("/pfp", (req, res) => {
 
 });
 
+require('dotenv').config();
+const { S3Client } = require('@aws-sdk/client-s3');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+
+// configure AWS S3
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  }
+});
+
+// configure multer to upload to S3
+const upload = multer({
+  storage: multerS3({
+    s3: s3Client,
+    bucket: process.env.AWS_BUCKET_NAME,
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      const uniqueName = Date.now().toString() + '-' + file.originalname;
+      cb(null, uniqueName);
+    }
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+});
+
+router.post('/uploadPfp', upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  
+  const imageUrl = req.file.location; // S3 URL
+  res.json({ imageUrl });
+});
+
 router.post("/storyRank", (req, res) => {
   const newRank = req.body.newRank;
 
@@ -349,8 +388,7 @@ router.post("/storyRank", (req, res) => {
   });
 });
 
-//chatbook
-
+// chatbook
 router.post("/initsocket", (req, res) => {
   if (req.user) socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
   res.send({});

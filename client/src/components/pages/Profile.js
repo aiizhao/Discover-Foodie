@@ -57,24 +57,25 @@ const Profile = (props) => {
 
   const handleImageChange = async (event) => {
     event.preventDefault();
-
-    const myImage = new FormData();
-    myImage.append("image", event.target.files[0]);
-
-    await fetch('https://api.imgur.com/3/image', {
-      method: 'POST',
-      headers: {Authorization: 'Client-ID b15bcccaa86b623',},
-      body: myImage
-    }).then((response) => response.json())
-    .then((responseJSON) => {
-      post("/api/pfp", { newPFP : responseJSON.data.link }).then((updatedUser) => {
-        console.log("PFP Posted", responseJSON.data.link);
-        setPFP(responseJSON.data.link);
+    
+    const formData = new FormData();
+    formData.append('image', event.target.files[0]);
+    
+    try {
+      const response = await fetch('/api/uploadPfp', {
+        method: 'POST',
+        body: formData
       });
-    }).catch((err) => {
-        console.log("ERROR");
-    });
-  }
+      
+      const data = await response.json();
+      await post("/api/pfp", { newPFP: data.imageUrl });
+      console.log("PFP Posted", data.imageUrl);
+      setPFP(data.imageUrl);
+      
+    } catch (err) {
+      console.error("Upload error:", err);
+    }
+  };
 
   const handleProfilePic = async (event) => {
     event.preventDefault();
