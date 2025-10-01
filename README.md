@@ -16,7 +16,6 @@ Users can:
     react-beautiful-dnd
     react-quill
     react-scroll-up-button
-    imgur upload API
     react-rating-stars-component
     react-html-parser
     google-maps-react

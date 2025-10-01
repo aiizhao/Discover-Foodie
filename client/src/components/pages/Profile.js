@@ -57,21 +57,21 @@ const Profile = (props) => {
 
   const handleImageChange = async (event) => {
     event.preventDefault();
-    
+
     const formData = new FormData();
     formData.append('image', event.target.files[0]);
-    
+
     try {
-      const response = await fetch('/api/uploadPfp', {
+      const response = await fetch('/api/uploadImage', {
         method: 'POST',
         body: formData
       });
-      
+
       const data = await response.json();
       await post("/api/pfp", { newPFP: data.imageUrl });
       console.log("PFP Posted", data.imageUrl);
       setPFP(data.imageUrl);
-      
+
     } catch (err) {
       console.error("Upload error:", err);
     }

@@ -1,7 +1,7 @@
 const validator = require("./validator");
 validator.checkSetup();
 
-//import libraries 
+// import libraries 
 const http = require("http");
 const express = require("express"); // backend framework for our node server.
 const session = require("express-session"); // library that stores info about each connected user
@@ -15,11 +15,11 @@ require('dotenv').config();
 
 const socketManager = require("./server-socket");
 
-// Server configuration 
+// server configuration 
 const mongoConnectionURL = process.env.MONGO_SRV;
 const databaseName = process.env.DB_NAME;
 
-// connect to mongodb
+// connect to MongoDB
 mongoose
   .connect(mongoConnectionURL, {
     useNewUrlParser: true,

@@ -84,13 +84,13 @@ const NewStory = (props) => {
     const myImage = new FormData();
     myImage.append("image", imageValue);
 
-    await fetch('https://api.imgur.com/3/image', {
-      method: 'POST',
-      headers: {Authorization: 'Client-ID b15bcccaa86b623',},
-      body: myImage
-    }).then((response) => response.json())
-    .then((responseJSON) => {
-      const storyBody = { title: titleValue, content: contentValue, rating: ratingValue, image: responseJSON.data.link };
+    try {
+      const response = await fetch('/api/uploadImage', {
+        method: 'POST',
+        body: myImage
+      });
+      const data = await response.json();
+      const storyBody = { title: titleValue, content: contentValue, rating: ratingValue, image: data.imageUrl };
       post("/api/story", storyBody).then((newStory) => {
         const rankBody = { storyid: newStory._id };
         post("/api/insertStoryRank", rankBody).then((result) => {
@@ -101,9 +101,30 @@ const NewStory = (props) => {
           setSubmitted(true);
         });
       });
-    }).catch((err) => {
-        console.log("ERROR");
-    });
+    } catch (err) {
+      console.error("Upload error:", err);
+    }
+
+    // await fetch('https://api.imgur.com/3/image', {
+    //   method: 'POST',
+    //   headers: {Authorization: 'Client-ID b15bcccaa86b623',},
+    //   body: myImage
+    // }).then((response) => response.json())
+    // .then((responseJSON) => {
+    //   const storyBody = { title: titleValue, content: contentValue, rating: ratingValue, image: responseJSON.data.link };
+    //   post("/api/story", storyBody).then((newStory) => {
+    //     const rankBody = { storyid: newStory._id };
+    //     post("/api/insertStoryRank", rankBody).then((result) => {
+    //       setTitleValue("");
+    //       setContentValue("");
+    //       setRatingValue("");
+    //       setImageValue("");
+    //       setSubmitted(true);
+    //     });
+    //   });
+    // }).catch((err) => {
+    //     console.log("ERROR");
+    // });
   }
   
   const rating = {

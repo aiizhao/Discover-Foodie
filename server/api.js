@@ -26,7 +26,6 @@ router.get("/whoami", (req, res) => {
 });
 
 // API methods
-
 router.get("/story", (req, res) => {
   Story.findById(req.query.storyid).then((storyObj) => res.send(storyObj));
 });
@@ -306,7 +305,6 @@ router.post("/comment", (req, res) => {
   newComment.save().then((comment) => res.send(comment));
 });
 
-
 router.post("/bio", (req, res) => {
   const newBio = req.body.newBio;
 
@@ -335,12 +333,12 @@ router.post("/pfp", (req, res) => {
 
 });
 
+// configure AWS S3
 require('dotenv').config();
 const { S3Client } = require('@aws-sdk/client-s3');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 
-// configure AWS S3
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -365,7 +363,7 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
 });
 
-router.post('/uploadPfp', upload.single('image'), (req, res) => {
+router.post('/uploadImage', upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
